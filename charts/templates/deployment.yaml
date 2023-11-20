@@ -1,0 +1,114 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "application.fullname" . }}
+  {{- if .Values.deploymentAnnotations }}
+  annotations:
+    {{- range $key, $value := .Values.deploymentAnnotations }}
+    {{ $key }}: {{ $value | quote }}
+    {{- end }}
+  {{- end }}
+  labels:
+    app: {{ template "application.fullname" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    release: "{{ .Release.Name }}"
+    heritage: "{{ .Release.Service }}"
+spec:
+  strategy:
+    type: {{ .Values.spec.strategy.type }}
+  selector:
+    matchLabels:
+      app: {{ template "application.fullname" . }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "application.fullname" . }}
+      {{- if .Values.podAnnotations }}
+      annotations:
+        {{- range $key, $value := .Values.podAnnotations }}
+        {{ $key }}: {{ $value | quote }}
+        {{- end }}
+      {{- end }}
+    spec:
+      {{- if .Values.containerImage.imagePullSecret }}
+      imagePullSecrets:
+        - name: {{ .Values.containerImage.imagePullSecret }}
+      {{- end }}
+      containers:
+      - name: {{ template "application.fullname" . }}
+        image: "{{ .Values.containerImage.image }}:{{ .Values.containerImage.tag }}"
+        imagePullPolicy:  "{{ .Values.containerImage.imagePullPolicy }}"
+        stdin: true
+        tty: true
+        resources:
+{{ toYaml .Values.resources | indent 10 }}
+{{- if .Values.probes.readinessProbe.enabled }}
+{{ toYaml .Values.probes.readinessProbe | indent 10 }}
+{{- end }}
+{{- if .Values.probes.livenessProbe.enabled }}
+{{ toYaml .Values.probes.livenessProbe | indent 10 }}
+{{- end }}
+{{- if .Values.probes.startupProbe.enabled }}
+{{ toYaml .Values.probes.startupProbe | indent 10 }}
+{{- end }}
+
+
+        env:
+        - name: TZ
+          value: Australia/Brisbane
+      {{- range $key, $value := .Values.extraEnv }}
+      {{-   if kindIs "map" $value }}
+      {{-     if hasKey $value "valueFrom" }}
+        - name: {{ $key }}
+          valueFrom:
+            {{- $value.valueFrom | toYaml | nindent 12 }}
+      {{-     end }}
+      {{-   else }}
+        - name: {{ $key }}
+          value: {{ $value | quote }}
+      {{-   end }}
+      {{- end }}
+
+
+        ports:
+        - name: {{ template "application.fullname" . }}
+          containerPort: {{ .Values.container.port }}
+          protocol: {{ .Values.container.protocol }}
+
+        volumeMounts:
+        - name: datadir
+          mountPath: {{ .Values.persistence.dataDir.mountPath }}
+        {{- range .Values.extraVolumes }}
+        {{-   if .volumeMounts }}
+        {{-     toYaml .volumeMounts | nindent 8 }}
+        {{-   end }}
+        {{- end }}
+
+      volumes:
+      - name: datadir
+      {{- if .Values.persistence.dataDir.enabled }}
+        persistentVolumeClaim:
+        {{- if .Values.persistence.dataDir.existingClaim }}
+          claimName: {{ .Values.persistence.dataDir.existingClaim }}
+        {{- else }}
+         claimName: {{ template "application.fullname" . }}-datadir
+        {{- end }}
+      {{- else }}
+        emptyDir: {}
+      {{- end }}
+      {{- range .Values.extraVolumes }}
+      {{- toYaml .volumes | nindent 6 }}
+      {{- end }}
+      
+    {{- if .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml .Values.nodeSelector | indent 8 }}
+    {{- end }}
+    {{- if .Values.affinity }}
+      affinity:
+{{ toYaml .Values.affinity | indent 8 }}
+    {{- end }}
+    {{- if .Values.tolerations }}
+      tolerations:
+{{ toYaml .Values.tolerations | indent 8 }}
+    {{- end }}
