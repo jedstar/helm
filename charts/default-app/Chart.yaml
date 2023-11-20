@@ -4,7 +4,7 @@ version: 0.1
 appVersion: SeeValues
 description: Default Application Template
 sources:
-- http://gitlabrancher.domain.xyz/fleet
+- https://github.com/jedstar/helm
 maintainers:
 - name: jedsta
   email: dont@email.me
