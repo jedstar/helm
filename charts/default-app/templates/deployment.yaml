@@ -42,10 +42,8 @@ spec:
         tty: true
         resources:
 {{ toYaml .Values.resources | indent 10 }}
-{{- if .Values.probes.readinessProbe.enabled }}
-{{- range .Values.probes }}
-{{ toYaml .readinessProbe | indent 10 }}
-{{- end }}
+{{- if .Values.readinessProbe.enabled }}
+{{ toYaml .Values.readinessProbe | indent 10 }}
 {{- end }}
 
 {{- if .Values.probes.livenessProbe.enabled }}
