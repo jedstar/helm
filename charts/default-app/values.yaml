@@ -1,4 +1,4 @@
-nameOverride: ta
+nameOverride: neededornot
 
 deploymentAnnotations: {}
 imagePullSecret: 
