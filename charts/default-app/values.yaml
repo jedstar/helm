@@ -25,13 +25,10 @@ resources:
     memory: 512Mi
     cpu: 500m
 
-probes:
-  readinessProbe:
-    enabled: false
-  livenessProbe:
-    enabled: false
-  startupProbe:
-    enabled: false
+
+readinessProbe: {}
+livenessProbe: {}
+startupProbe: {}
 
 container:
   port: 7878
