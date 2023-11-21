@@ -3,6 +3,20 @@ entries:
   app-template:
   - apiVersion: v1
     appVersion: SeeValues
+    created: "2023-11-21T01:43:19.074803871Z"
+    description: Default Application Template
+    digest: 79bc74dac07a3e480e2f5993758291a480569fd98356a9bdb043c1138b7c5060
+    maintainers:
+    - email: dont@email.me
+      name: jedsta
+    name: app-template
+    sources:
+    - https://github.com/jedstar/helm
+    urls:
+    - https://github.com/jedstar/helm/releases/download/app-template-1.0.0/app-template-1.0.0.tgz
+    version: 1.0.0
+  - apiVersion: v1
+    appVersion: SeeValues
     created: "2023-11-21T01:26:15.513092719Z"
     description: Default Application Template
     digest: c40250419ebc151dc6703bbe44b095ea10a869d2690ca7817b4d65af4ec9d25a
@@ -155,4 +169,4 @@ entries:
     urls:
     - https://github.com/jedstar/helm/releases/download/app-template-0.1.1/app-template-0.1.1.tgz
     version: 0.1.1
-generated: "2023-11-21T01:26:15.513137703Z"
+generated: "2023-11-21T01:43:19.074887788Z"
