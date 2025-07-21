@@ -41,7 +41,7 @@ spec:
         imagePullPolicy:  "{{ .Values.containerImage.imagePullPolicy }}"
         stdin: true
         tty: true
-{{- if $.Values.command }}
+{{- if .Values.command }}
           command:
 {{ toYaml .Values.command.cmd | nindent 10 }}
 {{- end }}
