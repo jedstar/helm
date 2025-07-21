@@ -82,9 +82,9 @@ spec:
         - name: {{ template "application.fullname" . }}
           containerPort: {{ .Values.container.port }}
           protocol: {{ .Values.container.protocol }}
-        {{- range .Values.extraPorts }}
-        {{-     toYaml . | nindent 10 }}
-        {{- end }}
+{{- if .Values.extraPorts }}
+{{ toYaml .Values.extraPorts | indent 10 }}
+{{- end }}
 
         volumeMounts:
         - name: datadir
