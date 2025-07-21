@@ -42,15 +42,10 @@ spec:
         stdin: true
         tty: true
 
-
-  {{- with .Values.args }}
+{{- if .Values.args }}
         args:
-    {{- if kindIs "string" . }}
-          - {{ . }}
-    {{- else }}
-          - {{ toYaml .  }}
-    {{- end }}
-  {{- end }}
+{{ toYaml .Values.args | indent 10 }}
+{{- end }}
 
         resources:
 {{ toYaml .Values.resources | indent 10 }}
