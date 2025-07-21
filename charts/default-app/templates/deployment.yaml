@@ -46,9 +46,9 @@ spec:
   {{- with .Values.args }}
         args:
     {{- if kindIs "string" . }}
-    - {{ . }}
+          - {{ . }}
     {{- else }}
-    - {{ toYaml . | nindent 12 }}
+          - {{ toYaml .  }}
     {{- end }}
   {{- end }}
 
