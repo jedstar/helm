@@ -46,7 +46,7 @@ spec:
     {{- if kindIs "string" . }}
     - {{ . }}
     {{- else }}
-    {{ toYaml . | nindent 8 }}
+    {{ toYaml . | nindent 12 }}
     {{- end }}
   {{- end }}
 
