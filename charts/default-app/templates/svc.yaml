@@ -25,5 +25,8 @@ spec:
     nodePort: {{ .Values.service.nodePort }}
     {{- end }}
     protocol: {{ .Values.container.protocol }}
+{{- range .Values.extraPorts }}
+{{ toYaml . | indent 2 }}
+{{- end }}
   selector:
     app: {{ template "application.fullname" . }}
