@@ -82,8 +82,8 @@ spec:
         - name: {{ template "application.fullname" . }}
           containerPort: {{ .Values.container.port }}
           protocol: {{ .Values.container.protocol }}
-{{- if .Values.extraPorts }}
-{{ toYaml .Values.extraPorts | indent 10 }}
+{{- range .Values.extraPorts }}
+{{ toYaml . | indent 10 }}
 {{- end }}
 
         volumeMounts:
